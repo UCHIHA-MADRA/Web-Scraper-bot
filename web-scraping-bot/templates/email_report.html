@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Daily Competitor Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .header { background-color: #f4f4f4; padding: 20px; text-align: center; }
+        .content { padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #f2f2f2; }
+        .footer { margin-top: 30px; padding: 20px; background-color: #f9f9f9; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Daily Competitor Report</h1>
+        <p>Generated on: {{date}}</p>
+    </div>
+    
+    <div class="content">
+        <h2>Summary</h2>
+        <p>Total Products Monitored: {{total_products}}</p>
+        <p>Successful Scrapes: {{successful_scrapes}}</p>
+        <p>Errors: {{errors}}</p>
+        
+        <h2>Key Findings</h2>
+        <ul>
+            <li>Price changes detected: {{price_changes}}</li>
+            <li>Availability updates: {{availability_updates}}</li>
+            <li>New products found: {{new_products}}</li>
+        </ul>
+        
+        <p>Detailed report is attached as Excel file.</p>
+    </div>
+    
+    <div class="footer">
+        <p>This is an automated report from Web Scraping Bot</p>
+    </div>
+</body>
+</html>

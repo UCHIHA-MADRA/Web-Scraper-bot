@@ -1,0 +1,14 @@
+{
+    "daily_report": {
+        "subject": "Daily Competitor Report - {date}",
+        "template": "templates/email_report.html"
+    },
+    "error_notification": {
+        "subject": "Scraping Bot Error Alert - {date}",
+        "template": "templates/error_notification.html"
+    },
+    "weekly_summary": {
+        "subject": "Weekly Competition Summary - Week {week}",
+        "template": "templates/weekly_summary.html"
+    }
+}

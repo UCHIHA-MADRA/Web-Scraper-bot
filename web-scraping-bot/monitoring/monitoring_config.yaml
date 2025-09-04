@@ -1,0 +1,260 @@
+# Web Scraping Bot Monitoring Configuration
+
+# General monitoring settings
+general:
+  enabled: true
+  environment: production  # Options: development, staging, production
+  service_name: web-scraping-bot
+  instance_id: ${HOSTNAME}
+
+# Metrics collection
+metrics:
+  enabled: true
+  collection_interval_seconds: 15
+  retention_days: 30
+  exporters:
+    prometheus:
+      enabled: true
+      port: 9090
+      path: /metrics
+    statsd:
+      enabled: false
+      host: localhost
+      port: 8125
+      prefix: web-scraping-bot
+
+# Performance metrics to collect
+performance_metrics:
+  - name: scraping_duration_seconds
+    description: Time taken to scrape a target website
+    type: histogram
+    labels:
+      - target_name
+      - url
+  - name: parsing_duration_seconds
+    description: Time taken to parse scraped content
+    type: histogram
+    labels:
+      - target_name
+      - parser_type
+  - name: report_generation_duration_seconds
+    description: Time taken to generate reports
+    type: histogram
+    labels:
+      - report_type
+  - name: email_sending_duration_seconds
+    description: Time taken to send emails
+    type: histogram
+  - name: cache_hit_ratio
+    description: Ratio of cache hits to total cache lookups
+    type: gauge
+    labels:
+      - cache_type
+
+# Business metrics to collect
+business_metrics:
+  - name: products_scraped_count
+    description: Number of products scraped
+    type: counter
+    labels:
+      - target_name
+      - category
+  - name: price_changes_detected
+    description: Number of price changes detected
+    type: counter
+    labels:
+      - target_name
+      - direction
+  - name: reports_generated_count
+    description: Number of reports generated
+    type: counter
+    labels:
+      - report_type
+  - name: emails_sent_count
+    description: Number of emails sent
+    type: counter
+    labels:
+      - recipient_count
+      - has_attachments
+
+# System metrics to collect
+system_metrics:
+  - name: cpu_usage_percent
+    description: CPU usage percentage
+    type: gauge
+  - name: memory_usage_bytes
+    description: Memory usage in bytes
+    type: gauge
+  - name: disk_usage_percent
+    description: Disk usage percentage
+    type: gauge
+    labels:
+      - mount_point
+  - name: network_received_bytes
+    description: Network bytes received
+    type: counter
+  - name: network_sent_bytes
+    description: Network bytes sent
+    type: counter
+
+# Logging configuration
+logging:
+  enabled: true
+  level: INFO  # Options: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: json  # Options: text, json
+  exporters:
+    file:
+      enabled: true
+      path: logs/monitoring.log
+      max_size_mb: 100
+      backup_count: 5
+    elasticsearch:
+      enabled: false
+      hosts: ["http://elasticsearch:9200"]
+      index: web-scraping-bot-logs
+
+# Tracing configuration
+tracing:
+  enabled: true
+  sampling_rate: 0.1  # Sample 10% of requests
+  exporters:
+    jaeger:
+      enabled: true
+      agent_host: localhost
+      agent_port: 6831
+    zipkin:
+      enabled: false
+      endpoint: http://zipkin:9411/api/v2/spans
+
+# Health checks
+health_checks:
+  enabled: true
+  endpoint: /health
+  checks:
+    - name: database_connection
+      description: Check database connection
+      timeout_seconds: 5
+    - name: cache_connection
+      description: Check cache connection
+      timeout_seconds: 5
+    - name: smtp_connection
+      description: Check SMTP server connection
+      timeout_seconds: 10
+    - name: disk_space
+      description: Check available disk space
+      threshold_percent: 90
+      timeout_seconds: 5
+
+# Alerting configuration
+alerting:
+  enabled: true
+  providers:
+    email:
+      enabled: true
+      recipients:
+        - alerts@example.com
+      throttle_seconds: 3600  # Don't send more than one email per hour for the same alert
+    slack:
+      enabled: false
+      webhook_url: ${SLACK_WEBHOOK_URL}
+      channel: "#monitoring-alerts"
+      throttle_seconds: 1800  # Don't send more than one message per 30 minutes for the same alert
+    pagerduty:
+      enabled: false
+      service_key: ${PAGERDUTY_SERVICE_KEY}
+      throttle_seconds: 0  # No throttling for critical alerts
+
+# Alert rules
+alert_rules:
+  - name: high_error_rate
+    description: High error rate detected
+    condition: "rate(http_requests_total{status=~'5..'}[5m]) / rate(http_requests_total[5m]) > 0.05"
+    severity: critical
+    annotations:
+      summary: "High error rate detected ({{ $value | humanizePercentage }})"
+      description: "Error rate is above 5% for the past 5 minutes"
+    providers:
+      - email
+      - slack
+      - pagerduty
+
+  - name: scraping_duration_high
+    description: Scraping duration is too high
+    condition: "histogram_quantile(0.95, rate(scraping_duration_seconds_bucket[5m])) > 30"
+    severity: warning
+    annotations:
+      summary: "Slow scraping detected ({{ $value | humanizeDuration }})"
+      description: "95th percentile of scraping duration is above 30 seconds"
+    providers:
+      - email
+      - slack
+
+  - name: low_cache_hit_ratio
+    description: Cache hit ratio is too low
+    condition: "cache_hit_ratio < 0.5"
+    severity: warning
+    annotations:
+      summary: "Low cache hit ratio ({{ $value | humanizePercentage }})"
+      description: "Cache hit ratio is below 50%"
+    providers:
+      - email
+
+  - name: high_memory_usage
+    description: Memory usage is too high
+    condition: "memory_usage_bytes / memory_total_bytes > 0.9"
+    severity: critical
+    annotations:
+      summary: "High memory usage ({{ $value | humanizePercentage }})"
+      description: "Memory usage is above 90%"
+    providers:
+      - email
+      - slack
+      - pagerduty
+
+# Dashboard configuration
+dashboards:
+  enabled: true
+  provider: grafana
+  grafana:
+    url: http://grafana:3000
+    api_key: ${GRAFANA_API_KEY}
+    dashboards:
+      - name: Overview
+        description: Overview of all metrics
+        panels:
+          - title: Request Rate
+            type: graph
+            metrics:
+              - "rate(http_requests_total[5m])"
+          - title: Error Rate
+            type: graph
+            metrics:
+              - "rate(http_requests_total{status=~'5..'}[5m]) / rate(http_requests_total[5m])"
+          - title: Scraping Duration
+            type: graph
+            metrics:
+              - "histogram_quantile(0.95, rate(scraping_duration_seconds_bucket[5m]))"
+          - title: Cache Hit Ratio
+            type: gauge
+            metrics:
+              - "cache_hit_ratio"
+      - name: System
+        description: System metrics
+        panels:
+          - title: CPU Usage
+            type: graph
+            metrics:
+              - "cpu_usage_percent"
+          - title: Memory Usage
+            type: graph
+            metrics:
+              - "memory_usage_bytes / memory_total_bytes"
+          - title: Disk Usage
+            type: graph
+            metrics:
+              - "disk_usage_percent"
+          - title: Network Traffic
+            type: graph
+            metrics:
+              - "rate(network_received_bytes[5m])"
+              - "rate(network_sent_bytes[5m])"

@@ -1,0 +1,32 @@
+DEMO EXCEL-LIKE REPORT
+===================
+
+Generated: 2025-09-04 16:26:10
+
+PRODUCT SUMMARY
+---------------
+Total Products: 13
+Total Value: $8149.87
+Average Price: $626.91
+
+PRODUCT DETAILS
+---------------
+
+Website: https://example-electronics.com
+  - Laptop Pro: $1299.99 (In Stock), Rating: 4.8
+  - Smart Watch: $249.99 (Out of Stock), Rating: 4.0
+  - Tablet Ultra: $499.99 (In Stock), Rating: 4.6
+
+Website: https://sample-tech-store.com
+  - Tablet Ultra: $499.99 (In Stock), Rating: 4.6
+  - Smart Watch: $249.99 (Out of Stock), Rating: 4.0
+  - Wireless Headphones: $199.99 (In Stock), Rating: 4.2
+  - Smartphone X: $799.99 (In Stock), Rating: 4.5
+  - Laptop Pro: $1299.99 (In Stock), Rating: 4.8
+
+Website: https://demo-gadget-shop.com
+  - Smart Watch: $249.99 (Out of Stock), Rating: 4.0
+  - Tablet Ultra: $499.99 (In Stock), Rating: 4.6
+  - Wireless Headphones: $199.99 (In Stock), Rating: 4.2
+  - Smartphone X: $799.99 (In Stock), Rating: 4.5
+  - Laptop Pro: $1299.99 (In Stock), Rating: 4.8

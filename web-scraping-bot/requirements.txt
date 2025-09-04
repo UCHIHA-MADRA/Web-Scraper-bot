@@ -1,0 +1,32 @@
+# Web Scraping Bot Dependencies
+
+# Core dependencies
+requests==2.31.0
+beautifulsoup4==4.12.2
+pandas==2.0.3
+openpyxl==3.1.2
+schedule==1.2.0
+lxml==4.9.3
+python-dotenv==1.0.0
+flask==2.3.3
+selenium==4.11.2
+
+# Security dependencies
+cryptography==38.0.4
+bcrypt==4.0.1
+PyJWT==2.6.0
+
+# Testing dependencies
+pytest==7.3.1
+pytest-cov==4.1.0
+
+# Performance optimization
+requests-cache==1.0.1
+
+# Additional dependencies for demo
+colorama==0.4.6
+psutil==5.9.4
+pyyaml==6.0
+promptplus==1.0.2
+tqdm==4.64.1
+matplotlib==3.6.2

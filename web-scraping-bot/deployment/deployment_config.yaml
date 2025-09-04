@@ -1,0 +1,138 @@
+# Web Scraping Bot Deployment Configuration
+
+# Environment settings
+environment: production  # Options: development, staging, production
+
+# Application settings
+application:
+  name: web-scraping-bot
+  version: 1.0.0
+  description: Web scraping and report generation bot
+  maintainer: admin@example.com
+
+# Server configuration
+server:
+  host: 0.0.0.0
+  port: 5000
+  workers: 4
+  timeout: 120
+  keep_alive: 5
+
+# Database configuration
+database:
+  type: sqlite  # Options: sqlite, mysql, postgresql
+  path: database/production.db
+  backup:
+    enabled: true
+    schedule: "0 0 * * *"  # Daily at midnight (cron format)
+    retention_days: 30
+
+# Logging configuration
+logging:
+  level: INFO  # Options: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: json  # Options: text, json
+  retention_days: 14
+  max_size_mb: 100
+
+# Security settings
+security:
+  ssl_enabled: true
+  ssl_cert: /etc/ssl/certs/web-scraping-bot.crt
+  ssl_key: /etc/ssl/private/web-scraping-bot.key
+  allowed_hosts:
+    - localhost
+    - 127.0.0.1
+    - example.com
+  cors_origins:
+    - https://example.com
+
+# Scraping settings
+scraping:
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+  request_timeout: 30
+  retry_count: 3
+  retry_delay: 5
+  respect_robots_txt: true
+  rate_limit:
+    enabled: true
+    requests_per_minute: 10
+
+# Caching settings
+cache:
+  enabled: true
+  expiration: 3600  # 1 hour in seconds
+  backend: file  # Options: memory, file, redis
+  redis:
+    host: localhost
+    port: 6379
+    db: 0
+
+# Email settings
+email:
+  enabled: true
+  smtp_server: smtp.example.com
+  smtp_port: 587
+  smtp_username: ${SMTP_USERNAME}
+  smtp_password: ${SMTP_PASSWORD}
+  use_tls: true
+  from_email: reports@example.com
+  recipients:
+    - user1@example.com
+    - user2@example.com
+
+# Monitoring settings
+monitoring:
+  enabled: true
+  prometheus:
+    enabled: true
+    port: 9090
+  healthcheck:
+    enabled: true
+    endpoint: /health
+    interval_seconds: 60
+  alerts:
+    email_enabled: true
+    slack_enabled: false
+    slack_webhook: ${SLACK_WEBHOOK_URL}
+
+# Deployment settings
+deployment:
+  strategy: docker  # Options: docker, kubernetes, vm
+  docker:
+    registry: docker.io
+    image: web-scraping-bot
+    tag: ${VERSION}
+    build_args:
+      - BUILD_ENV=production
+  kubernetes:
+    namespace: web-scraping
+    replicas: 2
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+
+# Scaling settings
+scaling:
+  auto_scaling: true
+  min_instances: 1
+  max_instances: 5
+  cpu_threshold: 70
+  memory_threshold: 80
+
+# Backup settings
+backup:
+  enabled: true
+  schedule: "0 0 * * 0"  # Weekly on Sunday at midnight (cron format)
+  retention_count: 4
+  storage:
+    type: local  # Options: local, s3, azure
+    path: /backups
+    s3:
+      bucket: web-scraping-bot-backups
+      region: us-west-2
+      access_key: ${AWS_ACCESS_KEY}
+      secret_key: ${AWS_SECRET_KEY}

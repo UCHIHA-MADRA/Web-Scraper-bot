@@ -1,0 +1,14 @@
+website,product_id,name,price,rating,in_stock
+https://example-electronics.com,2,Laptop Pro,1299.99,4.8,True
+https://example-electronics.com,4,Smart Watch,249.99,4.0,False
+https://example-electronics.com,5,Tablet Ultra,499.99,4.6,True
+https://sample-tech-store.com,5,Tablet Ultra,499.99,4.6,True
+https://sample-tech-store.com,4,Smart Watch,249.99,4.0,False
+https://sample-tech-store.com,3,Wireless Headphones,199.99,4.2,True
+https://sample-tech-store.com,1,Smartphone X,799.99,4.5,True
+https://sample-tech-store.com,2,Laptop Pro,1299.99,4.8,True
+https://demo-gadget-shop.com,4,Smart Watch,249.99,4.0,False
+https://demo-gadget-shop.com,5,Tablet Ultra,499.99,4.6,True
+https://demo-gadget-shop.com,3,Wireless Headphones,199.99,4.2,True
+https://demo-gadget-shop.com,1,Smartphone X,799.99,4.5,True
+https://demo-gadget-shop.com,2,Laptop Pro,1299.99,4.8,True

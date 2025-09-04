@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{% block title %}Web Scraping Bot{% endblock %}</title>
+    {% block head_meta %}{% endblock %}
+    {% block styles %}{% endblock %}
+</head>
+<body>
+    {% block content %}{% endblock %}
+    
+    {% block scripts %}
+    <script>
+        // Common security functions
+        function getCSRFToken() {
+            return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        }
+        
+        function handleUnauthorized(response) {
+            if (response.status === 401) {
+                window.location.href = '/login?next=' + encodeURIComponent(window.location.pathname);
+                return true;
+            }
+            return false;
+        }
+        
+        function secureApiCall(url, options = {}) {
+            const csrfToken = getCSRFToken();
+            
+            // Set default options
+            const defaultOptions = {
+                headers: {
+                    'X-CSRF-Token': csrfToken,
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'same-origin'
+            };
+            
+            // Merge with user options
+            const mergedOptions = {
+                ...defaultOptions,
+                ...options,
+                headers: {
+                    ...defaultOptions.headers,
+                    ...(options.headers || {})
+                }
+            };
+            
+            return fetch(url, mergedOptions)
+                .then(response => {
+                    if (handleUnauthorized(response)) {
+                        throw new Error('Unauthorized');
+                    }
+                    return response;
+                });
+        }
+    </script>
+    {% endblock %}
+</body>
+</html>

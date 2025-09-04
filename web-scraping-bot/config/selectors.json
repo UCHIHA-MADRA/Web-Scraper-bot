@@ -1,0 +1,22 @@
+{
+    "amazon": {
+        "price": [".a-price-whole", ".a-offscreen", ".a-price .a-offscreen"],
+        "availability": ["#availability span", ".a-declarative"],
+        "rating": [".a-icon-alt", ".a-star-4-5", ".cr-original-review-link"]
+    },
+    "ebay": {
+        "price": [".u-flL", ".price", ".notranslate"],
+        "availability": [".u-flL", ".availability"],
+        "rating": [".reviews", ".star-rating", ".ebay-review-stars"]
+    },
+    "walmart": {
+        "price": ["[data-automation-id='product-price']", ".price-current", ".visuallyhidden"],
+        "availability": [".prod-ProductOffer-oosMsg", ".availability-msg"],
+        "rating": [".average-rating", ".ReviewsSection"]
+    },
+    "bestbuy": {
+        "price": [".sr-only", ".pricing-current-price", ".visuallyhidden"],
+        "availability": [".fulfillment-add-to-cart-button", ".c-button-disabled"],
+        "rating": [".c-reviews-v4", ".sr-only"]
+    }
+}
